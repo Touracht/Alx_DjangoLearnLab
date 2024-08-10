@@ -1,6 +1,6 @@
 # Contains multiple operations for manipulating data inside a table
 
-1. create_operation: book = Book(title = '1984', author = 'George Orwell', publication_year = 1949)
+1. create_operation: book = Book.objects.create(title = '1984', author = 'George Orwell', publication_year = 1949)
 output: title = "1984"
         author = "George Orwell"
         publication_year = 1949

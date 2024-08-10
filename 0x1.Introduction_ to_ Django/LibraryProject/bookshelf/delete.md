@@ -2,6 +2,6 @@
 
 delete_operation: Book.objects.delete(book)
 
-retrieve_operation: book = Book.objects.all()
+retrieve_operation: book = Book.objects.get()
 
 output: []
