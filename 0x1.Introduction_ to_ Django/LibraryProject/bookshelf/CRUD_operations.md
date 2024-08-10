@@ -8,8 +8,8 @@ output: title = "1984"
 2. retrieve_operation: book = Book.objects.all()
 output: (1984, George Orwell, 1949)
 
-3. update_operation: book = Book.objects.update(title = '1984')
-output: title = 1984
+3. update_operation: book = Book.objects.update(book.title = 'Nineteen Eighty-Four')
+output: title = Nineteen Eighty-Four
 
 4. delete_operation: Book.objects.delete(book)
 retrieve_operation: book = Book.objects.all()

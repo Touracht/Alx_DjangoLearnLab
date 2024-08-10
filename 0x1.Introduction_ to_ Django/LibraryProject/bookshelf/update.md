@@ -1,5 +1,5 @@
 # updates data in the table
 
-update_operation: book = Book.objects.update(title = '1984')
+update_operation: book = Book.objects.update(book.title = 'Nineteen Eighty-Four')
 
-output: title = 1984
+output: title = Nineteen Eighty-Four
