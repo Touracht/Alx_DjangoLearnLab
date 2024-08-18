@@ -21,5 +21,10 @@ class register(CreateView):
     success_url = reverse_lazy('login')
     template_name = 'relationship_app/register.html'
 
+from django.conf.urls import handler403
+from .views import handle_forbidden
+
+handler403 = handle_forbidden
+
 
 
