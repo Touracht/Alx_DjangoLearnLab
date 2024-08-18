@@ -22,9 +22,25 @@ class register(CreateView):
     template_name = 'relationship_app/register.html'
 
 from django.contrib.auth.decorators import user_passes_test
-from .role_checks import is_admin  # assuming role_checks.py contains your role checking functions
+from django.shortcuts import render
+
+def is_admin(user):
+    return user.userprofile.role == 'Admin'
+
+def is_librarian(user):
+    return user.userprofile.role == 'Librarian'
+
+def is_member(user):
+    return user.userprofile.role == 'Member'
 
 @user_passes_test(is_admin)
 def admin_view(request):
-    # Your logic for admin view
-    return render(request, 'admin_template.html')  # replace with your template
+    return render(request, 'profiles/admin_view.html')
+
+@user_passes_test(is_librarian)
+def librarian_view(request):
+    return render(request, 'profiles/librarian_view.html')
+
+@user_passes_test(is_member)
+def member_view(request):
+    return render(request, 'profiles/member_view.html')
