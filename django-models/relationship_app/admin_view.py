@@ -1,10 +1,8 @@
-# admin_view.py
+from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
-from django.http import HttpResponse
-
-def is_admin(user):
-    return user.groups.filter(name='Admin').exists()
+from .role_checks import is_admin  # assuming role_checks.py contains your role checking functions
 
 @user_passes_test(is_admin)
 def admin_view(request):
-    return HttpResponse("Welcome to the Admin View.")
+    # Your logic for admin view
+    return render(request, 'admin_template.html')  # replace with your template

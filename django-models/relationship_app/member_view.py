@@ -1,8 +1,8 @@
-from django.urls import path
-from .views import admin_view, librarian_view, member_view
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test
+from .role_checks import is_member  # assuming role_checks.py contains your role checking functions
 
-urlpatterns = [
-    path('admin/', admin_view.admin_view, name='admin_view'),
-    path('librarian/', librarian_view.librarian_view, name='librarian_view'),
-    path('member/', member_view.member_view, name='member_view'),
-]
+@user_passes_test(is_member)
+def member_view(request):
+    # Your logic for member view
+    return render(request, 'member_template.html')  # replace with your template
