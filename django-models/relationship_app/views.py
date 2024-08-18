@@ -50,7 +50,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Book
 from .forms import BookForm
 
-@permission_required('books.can_add_book')
+@permission_required('relationship_app.can_add_book')
 def add_book(request):
     if request.method == 'POST':
         form = BookForm(request.POST)
@@ -61,7 +61,7 @@ def add_book(request):
         form = BookForm()
     return render(request, 'books/book_form.html', {'form': form})
 
-@permission_required('books.can_change_book')
+@permission_required('relationship_app.can_change_book')
 def edit_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
@@ -73,7 +73,7 @@ def edit_book(request, pk):
         form = BookForm(instance=book)
     return render(request, 'books/book_form.html', {'form': form})
 
-@permission_required('books.can_delete_book')
+@permission_required('relationship_app.can_delete_book')
 def delete_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
