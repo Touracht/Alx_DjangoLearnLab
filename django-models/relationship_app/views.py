@@ -31,7 +31,7 @@ def is_admin(user):
     return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'admin'
 
 @user_passes_test(is_admin)
-def admin_view(request):
+def Admin(request):
     # Logic for the admin view
     return render(request, 'admin_page.html')
 
