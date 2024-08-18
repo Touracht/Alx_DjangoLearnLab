@@ -24,7 +24,7 @@ class register(CreateView):
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
 
-def is_admin(user):
+def Admin(user):
     return user.userprofile.role == 'Admin'
 
 def is_librarian(user):
@@ -32,9 +32,8 @@ def is_librarian(user):
 
 def is_member(user):
     return user.userprofile.role == 'Member'
-
-@user_passes_test(is_admin)
-def admin_view(request):
+@user_passes_test(Admin)
+def Admin(request):
     return render(request, 'profiles/admin_view.html')
 
 @user_passes_test(is_librarian)
