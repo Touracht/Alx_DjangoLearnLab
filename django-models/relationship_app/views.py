@@ -25,7 +25,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
 
 def Admin(user):
-    return user.userprofile.role == 'Admin'
+    return user.Userprofile.role == 'Admin'
 
 def is_librarian(user):
     return user.userprofile.role == 'Librarian'
