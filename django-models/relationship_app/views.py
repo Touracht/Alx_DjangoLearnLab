@@ -21,10 +21,26 @@ class register(CreateView):
     success_url = reverse_lazy('login')
     template_name = 'relationship_app/register.html'
 
+# myapp/views.py
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import render
+from .models import UserProfile
+
+# Helper function to check if the user is an Admin
+def is_admin(user):
+    return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'admin'
+
+@user_passes_test(is_admin)
+def admin_view(request):
+    # Logic for the admin view
+    return render(request, 'admin_page.html')
+
 from django.conf.urls import handler403
 from .views import handle_forbidden
 
 handler403 = handle_forbidden
+
+
 
 
 
