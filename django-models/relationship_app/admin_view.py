@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponseForbidden
 
 def Admin(user):
-    return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'admin'
+    return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
 
 @user_passes_test(Admin)
 def admin_view(request):
