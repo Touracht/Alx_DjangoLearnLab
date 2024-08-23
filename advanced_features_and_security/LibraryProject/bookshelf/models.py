@@ -8,7 +8,7 @@ class Book(models.Model):
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import BaseUserManager
 
-class UserManager(BaseUserManager):
+class CustomUserManager(BaseUserManager):
     
     def create_user(self, email, password):
         if not email:
