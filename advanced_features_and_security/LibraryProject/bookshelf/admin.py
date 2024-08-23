@@ -5,4 +5,10 @@ class BookAdmin(admin.ModelAdmin):
     list_filter = ('title', 'author', 'publication_year')
     search_fields = ('title', 'author')
 
-admin.site.register(Book, BookAdmin)
+from django.contrib.auth.admin import UserAdmin
+from .models import CustomUser
+
+class CustomUserAdmin(UserAdmin):
+    pass
+
+admin.site.register(CustomUser, CustomUserAdmin)
