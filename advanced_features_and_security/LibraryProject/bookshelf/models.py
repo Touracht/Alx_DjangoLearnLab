@@ -29,3 +29,7 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractUser):
     date_of_birth = models.DateField(null=False)
     profile_photo = models.ImageField()
+
+class Permissions(models.model):
+    premissions = [('can_view', 'Can view'), ('can_create', 'Can view'),
+                   ('can _edit', 'Can edit'), ('can_delete', 'Can delete')]
