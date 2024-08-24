@@ -37,7 +37,7 @@ def delete_book(request, pk):
         book.delete()
         return redirect('book_list')
 
-
+from .forms import ExampleForm
 
 
     
