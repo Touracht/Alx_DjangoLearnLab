@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bookshelf'
+    'csp'
 ]
+
+CSP_DEFAULT_SRC = ("'self")
+CSR_SCRIPT_SRC = ("'self", "https://trusted.cdn.com")
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
