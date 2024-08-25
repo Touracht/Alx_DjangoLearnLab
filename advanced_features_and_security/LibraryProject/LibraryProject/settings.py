@@ -144,4 +144,18 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True #Apply HSTS to all subdomains
 SECURE_HSTS_PRELOAD = True # Allow the site to be included in browsers' HSTS preload list
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+#SECURITY REVIEW REPORT:
+
+#Project Name: [bookshelf]
+#Date: []
+# Author: [Tebogo]
+
+#This report details the security 
+# measures implemented in [Your Django Application]
+# to enforce HTTPS and secure the application 
+# against common web vulnerabilities.
+# The changes were made to enhance the security posture of the application,
+# ensuring that all data transmitted between the client and server 
+# is encrypted and that various potential attack vectors are mitigated.
+
 
