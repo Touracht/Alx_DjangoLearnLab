@@ -13,10 +13,10 @@ class BookSerializer(serializers.ModelSerializer):
         current_year = datetime.now().year
 
         if data['publication_year'] > current_year:
-            raise serializers.ValidationError('Publication year must me current.')
+            raise serializers.ValidationError('Publication year must be current.')
 
 class AuthorSerializer(serializers.AuthorSerializer):
-    books = BookSerializer(many = True)
+    books = BookSerializer(many = True, read_only = True)
     
     class Meta:
         model = Author
