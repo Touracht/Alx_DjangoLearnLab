@@ -15,7 +15,7 @@ class BookSerializer(serializers.ModelSerializer):
         if data['publication_year'] > current_year:
             raise serializers.ValidationError('Publication year must be current.')
 
-class AuthorSerializer(serializers.AuthorSerializer):
+class AuthorSerializer(serializers.ModelSerializer):
     books = BookSerializer(many=True, read_only=True)
     
     class Meta:
