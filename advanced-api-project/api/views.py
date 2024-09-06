@@ -18,7 +18,6 @@ class DetailView(generics.GenericAPIView):
         except Book.DoesNotExist:
             return Response('Book not found.')
 
-
 class CreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
