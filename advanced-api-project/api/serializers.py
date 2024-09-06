@@ -18,6 +18,7 @@ class BookSerializer(serializers.ModelSerializer):
 
         if data['publication_year'] > current_year:
             raise serializers.ValidationError('Publication year must be current.')
+        return data
 
 class AuthorSerializer(serializers.ModelSerializer):
     """This serializer is for converting Book model instances into python code that will 
