@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework.exceptions import NotFound
 from .filters import BookFilter
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework import filters
 from django_filters import rest_framework
 
 class ListView(generics.ListAPIView):
@@ -24,7 +24,7 @@ class ListView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend]
     filterset_class = BookFilter
-    filter_backends = [SearchFilter, OrderingFilter]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     ordering_fields = ['title', 'publication_year']
     search_fields = ['title', 'author__name']
 
