@@ -25,9 +25,19 @@ class ListView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_class = BookFilter
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    ordering_fields = ['title', 'publication_year']
+    ordering_fields = ['title', 'publication_year'] 
     search_fields = ['title', 'author__name']
 
+"""Filtering in this view is handled by filter_backends and filterset_class. The Bookfilter assigned to
+the filerset class has been manually defined inside filters.py. A filtering example using the endpoint
+can be something like '/api/books/?title=mybook'."""
+
+"""Searching in this view is handled by filters.SearchFilter which allowes users to search for specific data
+using model instances. A searching example using the endpoint can be something like
+ '/api/books/?search=mybook'."""
+
+"""Ordering in this view is handled by filters.OrderingFilter which allowes users to order the retrieved data
+in a prefered way.An ordering example using the endpoint can be something like'/api/books/?order=name'."""
 
 class DetailView(generics.GenericAPIView):
 
