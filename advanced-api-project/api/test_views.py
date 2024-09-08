@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from .models import Book
 
-class BookModelTestCase(TestCase):
+class APITestCase(TestCase):
     def setUp(self):
         # Initialize the API client
         self.client = APIClient()
