@@ -1,13 +1,21 @@
-<h1>Edit Profile</h1>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div>
-        <h2>Account Information</h2>
-        {{ user_form.as_p }}
+{% extends 'blog/base.html' %}
+
+{% block title %}Profile Management{% endblock %}
+
+{% block content %}
+    <div class="profile-management-container">
+        <h2>Manage Your Profile</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-section">
+                <h3>User Information</h3>
+                {{ user_form.as_p }}
+            </div>
+            <div class="form-section">
+                <h3>Profile Information</h3>
+                {{ profile_form.as_p }}
+            </div>
+            <button type="submit" class="btn">Save Changes</button>
+        </form>
     </div>
-    <div>
-        <h2>Profile Information</h2>
-        {{ profile_form.as_p }}
-    </div>
-    <button type="submit">Save changes</button>
-</form>
+{% endblock %}

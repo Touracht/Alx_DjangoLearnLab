@@ -5,25 +5,29 @@
     box-sizing: border-box;
 }
 
+/* Body styling */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
     color: #333;
 }
 
+/* Header styling */
 header {
-    background-color: #333;
-    padding: 10px;
-    text-align: center;
+    background-color: #007bff; /* Blue background */
+    padding: 15px;
+    color: white;
 }
 
 header nav ul {
     list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
 header nav ul li {
     display: inline;
-    margin: 0 15px;
+    margin-right: 20px;
 }
 
 header nav ul li a {
@@ -32,14 +36,88 @@ header nav ul li a {
     font-size: 18px;
 }
 
-.content {
-    margin: 20px;
+header nav ul li a:hover {
+    text-decoration: underline;
+    color: #d0e6ff; /* Light blue on hover */
 }
 
+/* Content styling */
+.content {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 800px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer styling */
 footer {
     text-align: center;
-    margin-top: 50px;
-    padding: 10px;
-    background-color: #333;
+    padding: 15px;
+    background-color: #007bff; /* Blue background */
     color: white;
+    border-top: 2px solid #0056b3; /* Darker blue border at the top */
 }
+
+/* Button styling */
+.btn {
+    background-color: #28a745; /* Green background */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Form container styling */
+.registration-container {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form elements styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.form-group .form-error {
+    color: #d9534f;
+    font-size: 0.875em;
+    margin-top: 5px;
+}
+
+/* Error messages styling */
+.form-errors {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+

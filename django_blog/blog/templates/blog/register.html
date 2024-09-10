@@ -1,14 +1,14 @@
-{% extends "blog/base.html" %}
+{% extends 'blog/base.html' %}
 
-{% block title %}
-Register - Django Blog
-{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block content %}
-<h1>Register</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-</form>
+    <div class="register-container">
+        <h2>Register</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Register</button>
+        </form>
+    </div>
 {% endblock %}
