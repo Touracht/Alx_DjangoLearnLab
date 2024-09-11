@@ -57,7 +57,7 @@ def profile_management(request):
     })
 
 class HomePageView(TemplateView):
-    template_name = 'blog/base.html'
+    template_name = 'blog/home.html'
     
 # The following are Post related Views
 
@@ -87,8 +87,9 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
-    template_name = 'blog/post_update.html'
     post_form = PostForm
+    fields = ['title', 'content']
+    template_name = 'blog/post_update.html'
     success_url = reverse_lazy('posts')
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
@@ -108,7 +109,7 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
         """Handle the post request to delete the post."""
         self.object = self.get_object()
         if self.object.author != self.request.user:
-            # Optionally handle unauthorized delete attempts
+
             return self.handle_no_permission()
         return super().post(request, *args, **kwargs)
 

@@ -8,7 +8,12 @@
     <link rel="stylesheet" href="{% static 'blog/css/styles.css' %}">
 </head>
 <body>
+    <!-- Header -->
     <header>
+        <div class="site-title">
+            <h1>Whimsical Words</h1>
+            <p>Where Stories Come to Life</p>
+        </div>
         <nav>
             <ul>
                 <li><a href="{% url 'home' %}">Home</a></li>
@@ -18,24 +23,28 @@
                 <li>
                     <form method="post" action="{% url 'logout' %}" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit">Logout</button>
+                        <button type="submit" class="btn">Logout</button>
                     </form>
                 </li>
                 <li><a href="{% url 'create_post' %}">Create Post</a></li>
                 <li><a href="{% url 'posts' %}">Blog Posts</a></li>
-
             </ul>
         </nav>
     </header>
 
+    <!-- Main Content -->
     <div class="content">
+        {% block intro %}
+        <!-- Optional welcome message or other introductory content goes here -->
+        {% endblock %}
         {% block content %}
         <!-- Page-specific content goes here -->
         {% endblock %}
     </div>
 
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2024 Django Blog </p>
+        <p>&copy; 2024 Whimsical Words</p>
     </footer>
 
     <script src="{% static 'js/scripts.js' %}"></script>
