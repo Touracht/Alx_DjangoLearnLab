@@ -1,0 +1,19 @@
+{% extends "blog/base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p><strong>By {{ post.author.username }}</strong></p>  <!-- Display the author's username -->
+    <p><small>Published on {{ post.published_date }}</small></p>  <!-- Display the publish date -->
+    <p>{{ post.content }}</p>  <!-- Display the full content -->
+    
+    <!-- Optional: Add a link to edit or delete the post if the user is authorized -->
+    {% if user.is_authenticated and post.author == user %}
+        <a href="{% url 'post_update' pk=post.pk %}">Edit</a>  <!-- Link to edit view -->
+        <a href="{% url 'post_delete' pk=post.pk %}">Delete</a>  <!-- Link to delete view -->
+    {% endif %}
+    
+    <br>
+    <a href="{% url 'posts' %}">Back to Posts List</a>  <!-- Link to the list of posts -->
+{% endblock %}

@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, PostForm, CustomUserUpdateForm
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, UserProfileForm
 from django.contrib.auth.views import LogoutView
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from .models import Post
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import UserProfile
 
 def register(request):
     if request.method == "POST":
@@ -35,27 +38,79 @@ def login_view(request):
 @login_required
 def profile_management(request):
     if request.method == 'POST':
-        user_form = CustomUserCreationForm(request.POST, instance=request.user)
-        profile_form = UserProfileForm(request.POST)
+        user_form = CustomUserUpdateForm(request.POST, instance=request.user)
+        profile, created = UserProfile.objects.get_or_create(user=request.user)
+        profile_form = UserProfileForm(request.POST, instance=profile)
 
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
             return redirect('home')
     else:
-        # Initialize the forms with existing data
-        user_form = CustomUserCreationForm(instance=request.user)
-        profile_form = UserProfileForm()
+        user_form = CustomUserUpdateForm(instance=request.user)
+        profile, created = UserProfile.objects.get_or_create(user=request.user)
+        profile_form = UserProfileForm(instance=profile)
 
-    return render(request, 'blog/profile.html', {'user_form': user_form, 'profile_form': profile_form})
-
-class LogOut(LogoutView):
-    template_name = 'blog/logout.html'
-    successful_url = reverse_lazy('home')
+    return render(request, 'blog/profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })
 
 class HomePageView(TemplateView):
     template_name = 'blog/base.html'
     
+# The following are Post related Views
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return Post.objects.all()
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/create_post.html'
+    success_url = reverse_lazy('posts')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)        
+    
+
+class PostDetailView(LoginRequiredMixin, DetailView):
+    model = Post
+    template_name = 'blog/post_detail.html'
+    context_object_name = 'post'
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    template_name = 'blog/post_update.html'
+    post_form = PostForm
+    success_url = reverse_lazy('posts')
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'blog/post_delete.html'
+    success_url = reverse_lazy('posts') 
+
+    def get(self, request, *args, **kwargs):
+        
+        self.object = self.get_object()
+        if self.object.author != self.request.user:
+            
+            return self.handle_no_permission()
+        return super().get(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        """Handle the post request to delete the post."""
+        self.object = self.get_object()
+        if self.object.author != self.request.user:
+            # Optionally handle unauthorized delete attempts
+            return self.handle_no_permission()
+        return super().post(request, *args, **kwargs)
 
 
 

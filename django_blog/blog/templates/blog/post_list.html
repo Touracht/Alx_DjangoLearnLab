@@ -1,0 +1,19 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Blog Posts{% endblock %}
+
+{% block content %}
+    <h1>Blog Posts</h1>
+    
+    <ul class="post-list">
+        {% for post in posts %}
+            <li class="post-item">
+                <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+                <p><strong>By {{ post.author.username }}</strong></p>  <!-- Display the author's username -->
+                <p><small>Published on {{ post.published_date }}</small></p>  <!-- Display the publish date -->
+            </li>
+        {% empty %}
+            <p>No posts available.</p>
+        {% endfor %}
+    </ul>
+{% endblock %}
