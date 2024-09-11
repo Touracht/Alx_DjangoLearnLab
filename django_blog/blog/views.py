@@ -8,7 +8,7 @@ from django.contrib.auth.views import LogoutView
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Post
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import UserProfile
 
 def register(request):
@@ -85,14 +85,18 @@ class PostDetailView(LoginRequiredMixin, DetailView):
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
 
-class PostUpdateView(LoginRequiredMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     post_form = PostForm
     fields = ['title', 'content']
     template_name = 'blog/post_update.html'
     success_url = reverse_lazy('posts')
 
-class PostDeleteView(LoginRequiredMixin, DeleteView):
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'blog/post_delete.html'
     success_url = reverse_lazy('posts') 
@@ -112,6 +116,10 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 
             return self.handle_no_permission()
         return super().post(request, *args, **kwargs)
+    
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
 
 
 
