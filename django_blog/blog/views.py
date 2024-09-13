@@ -1,13 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CustomUserCreationForm, PostForm, CustomUserUpdateForm
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from .forms import CustomUserCreationForm, UserProfileForm
-from django.contrib.auth.views import LogoutView
+from .forms import CustomUserCreationForm, UserProfileForm, CommentForm
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Post
+from .models import Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import UserProfile
 
@@ -56,18 +55,27 @@ def profile_management(request):
         'profile_form': profile_form
     })
 
+
 class HomePageView(TemplateView):
     template_name = 'blog/home.html'
     
 # The following are Post related Views
 
-class PostListView(ListView):
+# blog/views.py
+
+class PostListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
 
     def get_queryset(self):
         return Post.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = Comment.objects.select_related('post', 'author').all()
+        context['form'] = CommentForm() 
+        return context
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -78,12 +86,33 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)        
-    
 
 class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CommentForm(user=self.request.user)  # Pass the current user to the form
+        context['comments'] = self.object.comments.all()  # Fetch comments related to the post
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()  # Get the post object
+        form = CommentForm(request.POST, user=request.user)  # Pass the current user to the form
+
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = self.object
+            comment.save()
+            return redirect('post_detail', pk=self.object.pk)  # Redirect to avoid resubmission
+
+        # If form is not valid, re-render the page with the form errors
+        context = self.get_context_data(form=form)  # Include form with errors in context
+        return self.render_to_response(context)
+    
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
@@ -120,6 +149,10 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
+
+#The following are comment related views.
+
+
 
 
 

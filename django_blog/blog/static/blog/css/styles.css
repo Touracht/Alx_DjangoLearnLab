@@ -9,7 +9,7 @@
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f5f5f5; /* Beige background */
-    color: #fff; /* White text */
+    color: #333; /* Dark text for better readability */
 }
 
 /* Header styling */
@@ -79,46 +79,50 @@ footer {
     background-color: #8b4513; /* Darker brown on hover */
 }
 
-/* Form container styling */
-.registration-container {
-    padding: 20px;
-    background-color: #fff8e1; /* Light beige */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Post list styling */
+.post-list {
+    list-style: none;
+    padding: 0;
 }
 
-/* Form elements styling */
-.form-group {
-    margin-bottom: 15px;
+.post-item {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
 }
 
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #fff; /* White text */
-}
-
-.form-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+/* Toggle comments button styling */
+.toggle-comments-btn {
+    background: none;
+    border: none;
+    color: #007bff; /* Blue color for the button */
+    cursor: pointer;
     font-size: 16px;
-    color: #333; /* Dark text for input fields */
+    padding: 5px;
+    text-decoration: underline;
+    margin-top: 10px;
 }
 
-/* Error messages styling */
-.form-error {
-    color: #d9534f; /* Red text for errors */
-    font-size: 0.875em;
-    margin-top: 5px;
+.toggle-comments-btn:hover {
+    color: #0056b3; /* Darker blue on hover */
 }
 
-.form-errors {
-    background-color: #f8d7da; /* Light red background */
-    color: #721c24; /* Dark red text */
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 15px;
+/* Arrow styling */
+.arrow {
+    font-size: 14px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+/* Comments section styling */
+.comments-section {
+    margin-top: 10px;
+    padding-left: 15px;
+}
+
+.comment-item {
+    margin-bottom: 10px;
+}
+
+.comment-item p {
+    margin-bottom: 5px;
 }

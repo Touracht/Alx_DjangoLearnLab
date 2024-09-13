@@ -9,8 +9,10 @@
         {% for post in posts %}
             <li class="post-item">
                 <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
-                <p><strong>By {{ post.author.username }}</strong></p>  <!-- Display the author's username -->
-                <p><small>Published on {{ post.published_date }}</small></p>  <!-- Display the publish date -->
+                <p><strong>By {{ post.author.username }}</strong></p>
+                <p><small>Published on {{ post.published_date }}</small></p>
+                
+                <!-- Removed comment-related sections -->
             </li>
         {% empty %}
             <p>No posts available.</p>
