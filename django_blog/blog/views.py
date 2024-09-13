@@ -94,13 +94,13 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = CommentForm(user=self.request.user)  # Pass the current user to the form
-        context['comments'] = self.object.comments.all()  # Fetch comments related to the post
+        context['form'] = CommentForm(user=self.request.user)  # Pass the user to the form
+        context['comments'] = self.object.comments.all()  # Get comments related to the post
         return context
-    
+
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()  # Get the post object
-        form = CommentForm(request.POST, user=request.user)  # Pass the current user to the form
+        form = CommentForm(request.POST, user=request.user)  # Pass the user to the form
 
         if form.is_valid():
             comment = form.save(commit=False)
@@ -112,7 +112,6 @@ class PostDetailView(LoginRequiredMixin, DetailView):
         # If form is not valid, re-render the page with the form errors
         context = self.get_context_data(form=form)  # Include form with errors in context
         return self.render_to_response(context)
-    
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post

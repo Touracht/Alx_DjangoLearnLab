@@ -13,7 +13,7 @@
         {% for comment in comments %}
             <div class="comment-item">
                 <p><strong>{{ comment.author.username }}:</strong> {{ comment.comment }}</p>
-                <p><small>Posted on {{ comment.created_at }}</small></p>
+                <p><small>Posted on {{ comment.created_at }} (Updated on {{ comment.updated_at }})</small></p>
             </div>
         {% empty %}
             <p>No comments yet.</p>
