@@ -30,10 +30,10 @@ class UserProfileForm(forms.ModelForm):
         fields = ['user', 'bio', 'image']
 
 class PostForm(forms.ModelForm):
-    widges = forms.CharField(required=False, widget=TagWidget())
+    tags = forms.CharField(required=False, widgets=TagWidget())
     class Meta:
         model = Post
-        fields = ['title', 'content', 'widgets']
+        fields = ['title', 'content', 'tags']
 
 class CommentForm(forms.ModelForm):
     class Meta:
