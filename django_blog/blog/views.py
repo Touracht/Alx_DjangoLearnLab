@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from .models import Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import UserProfile
+from django.urls import reverse
 
 def register(request):
     if request.method == "POST":
@@ -95,23 +96,8 @@ class PostDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = CommentForm(user=self.request.user)  # Pass the user to the form
-        context['comments'] = self.object.comments.all()  # Get comments related to the post
+        context['comments'] = self.object.comments.all()  # Fetch comments related to the post
         return context
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()  # Get the post object
-        form = CommentForm(request.POST, user=request.user)  # Pass the user to the form
-
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.author = request.user
-            comment.post = self.object
-            comment.save()
-            return redirect('post_detail', pk=self.object.pk)  # Redirect to avoid resubmission
-
-        # If form is not valid, re-render the page with the form errors
-        context = self.get_context_data(form=form)  # Include form with errors in context
-        return self.render_to_response(context)
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
@@ -151,15 +137,22 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 #The following are comment related views.
 
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
 
+    def get_form_kwargs(self):
+        """Pass the user to the form."""
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user  # Pass the user to the form
+        return kwargs
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post = get_object_or_404(Post, pk=self.kwargs['post_id'])
+        return super().form_valid(form)
 
-
-  
-
-
-
-
-
-
+    def get_success_url(self):
+        return reverse('post_detail', kwargs={'pk': self.object.post.pk})
 

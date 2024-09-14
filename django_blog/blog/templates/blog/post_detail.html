@@ -22,14 +22,16 @@
 
     {% if user.is_authenticated %}
         <div class="comment-form">
-            <h3>Add a Comment:</h3>
-            <form method="post" action="{% url 'post_detail' pk=post.pk %}">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn">Submit</button>
-            </form>
+            <a href="{% url 'comment_create' post_id=post.pk %}" class="btn">Add a Comment</a>  <!-- Link to comment creation view -->
         </div>
     {% else %}
         <p>You must be logged in to comment.</p>
+    {% endif %}
+
+    {% if user == post.author %}
+        <div class="post-actions">
+            <a href="{% url 'post_update' pk=post.pk %}" class="btn">Edit Post</a>
+            <a href="{% url 'post_delete' pk=post.pk %}" class="btn btn-danger">Delete Post</a>
+        </div>
     {% endif %}
 {% endblock %}
