@@ -156,3 +156,34 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('post_detail', kwargs={'pk': self.object.post.pk})
 
+class CommentUpdateView(LoginRequiredMixin, UpdateView):
+    model = Comment
+    fields = ['comment']  
+    template_name = 'blog/comment_form.html' 
+
+    def get_queryset(self):
+        """Ensure the user can only update their own comments."""
+        queryset = super().get_queryset()
+        return queryset.filter(author=self.request.user)
+
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'pk': self.object.post.pk})
+
+    def form_valid(self, form):
+        """Ensure the comment is associated with the post."""
+        form.instance.post = self.object.post
+        return super().form_valid(form)
+
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comment
+    template_name = 'blog/comment_confirm_delete.html'
+
+    def get_queryset(self):
+        """Ensure the user can only delete their own comments."""
+        queryset = super().get_queryset()
+        return queryset.filter(author=self.request.user)
+
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'pk': self.object.post.pk})
+
+

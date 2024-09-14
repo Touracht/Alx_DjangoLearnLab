@@ -14,6 +14,15 @@
             <div class="comment-item">
                 <p><strong>{{ comment.author.username }}:</strong> {{ comment.comment }}</p>
                 <p><small>Posted on {{ comment.created_at }} (Updated on {{ comment.updated_at }})</small></p>
+                
+                {% if user.is_authenticated %}
+                    {% if user == comment.author %}
+                        <div class="comment-actions">
+                            <a href="{% url 'edit_comment' pk=comment.pk %}" class="btn">Edit</a>
+                            <a href="{% url 'delete_comment' pk=comment.pk %}" class="btn btn-danger">Delete</a>
+                        </div>
+                    {% endif %}
+                {% endif %}
             </div>
         {% empty %}
             <p>No comments yet.</p>
@@ -22,7 +31,7 @@
 
     {% if user.is_authenticated %}
         <div class="comment-form">
-            <a href="{% url 'comment_create' post_id=post.pk %}" class="btn">Add a Comment</a>  <!-- Link to comment creation view -->
+            <a href="{% url 'comment_create' post_id=post.pk %}" class="btn">Add a Comment</a>
         </div>
     {% else %}
         <p>You must be logged in to comment.</p>
