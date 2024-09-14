@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import UserProfile, Post, Comment
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
+from taggit.forms import TagWidget
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -30,9 +30,10 @@ class UserProfileForm(forms.ModelForm):
         fields = ['user', 'bio', 'image']
 
 class PostForm(forms.ModelForm):
+    tags = forms.CharField(required=False, widget=TagWidget())
     class Meta:
         model = Post
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'tags']
 
 class CommentForm(forms.ModelForm):
     class Meta:

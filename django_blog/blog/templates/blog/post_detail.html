@@ -31,7 +31,7 @@
 
     {% if user.is_authenticated %}
         <div class="comment-form">
-            <a href="{% url 'comment_create' post_id=post.pk %}" class="btn">Add a Comment</a>
+            <a href="{% url 'comment_create' pk=post.pk %}" class="btn">Add a Comment</a>
         </div>
     {% else %}
         <p>You must be logged in to comment.</p>

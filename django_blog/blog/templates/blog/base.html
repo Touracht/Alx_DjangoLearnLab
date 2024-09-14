@@ -28,6 +28,13 @@
                 </li>
                 <li><a href="{% url 'create_post' %}">Create Post</a></li>
                 <li><a href="{% url 'posts' %}">Blog Posts</a></li>
+                <!-- Search Form -->
+                <li>
+                    <form method="get" action="{% url 'search' %}" class="search-form">
+                        <input type="text" name="q" placeholder="Search..." value="{{ request.GET.q }}">
+                        <button type="submit">Search</button>
+                    </form>
+                </li>
             </ul>
         </nav>
     </header>
