@@ -3,8 +3,8 @@
 {% block title %}Search Results{% endblock %}
 
 {% block content %}
-    <h1>Search Results</h1>
-    <form method="get" action="{% url 'search' %}">
+    <h1>Search Results{% if query %} for "{{ query }}"{% endif %}</h1>
+    <form method="get" action="{% url 'search' %}" class="search-form">
         <input type="text" name="q" placeholder="Search..." value="{{ query }}">
         <button type="submit">Search</button>
     </form>
@@ -19,6 +19,6 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>No results found for "{{ query }}"</p>
+        <p>No results found.</p>
     {% endif %}
 {% endblock %}

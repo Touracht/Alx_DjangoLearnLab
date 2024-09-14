@@ -188,19 +188,44 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
     
 from django.db.models import Q
 
-def search_view(request):
-    query = request.GET.get('q')
-    if query:
-        
-        posts = Post.objects.filter(
-            Q(title__icontains=query) |
-            Q(content__icontains=query) |
-            Q(tags__name__icontains=query)
-        ).distinct() 
-    else:
-        posts = Post.objects.none()  
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/search_results.html'
+    context_object_name = 'posts'
 
-    return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
+    def get_queryset(self):
+        tag_slug = self.kwargs.get('tag_slug')
+        query = self.request.GET.get('q', '')
 
+        if tag_slug:
+            queryset = Post.objects.filter(
+                Q(tags__slug=tag_slug) &
+                (Q(title__icontains=query) | Q(content__icontains=query))
+            ).distinct()
+        else:
+            queryset = Post.objects.filter(
+                Q(title__icontains=query) | Q(content__icontains=query)
+            ).distinct()
+        return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tag_slug'] = self.kwargs.get('tag_slug', '')
+        context['query'] = self.request.GET.get('q', '')
+        return context
 
+class SearchView(ListView):
+    model = Post
+    template_name = 'blog/search_results.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q', '')
+        return Post.objects.filter(
+            Q(title__icontains=query) | Q(content__icontains=query)
+        ).distinct()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('q', '')
+        return context

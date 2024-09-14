@@ -30,7 +30,7 @@ class UserProfileForm(forms.ModelForm):
         fields = ['user', 'bio', 'image']
 
 class PostForm(forms.ModelForm):
-    tags = forms.CharField(required=False, widgets=TagWidget())
+    tags = forms.CharField(required=False, widget=TagWidget())
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
