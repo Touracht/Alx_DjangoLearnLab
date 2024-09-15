@@ -39,10 +39,10 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['comment']
-
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'content': forms.Textarea(attrs={'class': 'form-control'}),
+        'title': forms.TextInput(attrs={'class': 'form-control'}),
+        'content': forms.Textarea(attrs={'class': 'form-control'}),
+        'tags': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
