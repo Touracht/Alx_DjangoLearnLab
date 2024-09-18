@@ -15,7 +15,7 @@ class CustomRegisterSerializer(serializers.ModelSerializer):
         
     def create(self, validated_data):
         validated_data.pop('password2')
-        user = CustomUser(username = validated_data['username'],
+        user = CustomUser.objects.create_user(username = validated_data['username'],
                           bio = validated_data.get('bio', ''),
                           profile_picture = validated_data.get('profile_picture', None))
         user.set_password(validated_data['password'])
@@ -42,6 +42,8 @@ class LoginSerializer(serializers.Serializer):
     
     def create(self, validated_data):
         user = validated_data['user']
+
+        Token.objects.create(user=user)
 
         token, created = Token.objects.get_or_create(user=user)
         return {'token': token.key}
