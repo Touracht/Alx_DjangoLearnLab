@@ -13,15 +13,15 @@ def register_user(request):
     if serializer.is_valid():
         user = serializer.save()
 
-        return Response({'message': 'User has been created successfully'}, status=status.HTTP_201_CREATED)
+        return Response({'message': 'User has been created successfully', 'id': user.id}, status=status.HTTP_201_CREATED)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['POST'])
 def login_user(request):
-    serializer = LoginSerializer
+    serializer = LoginSerializer(data=request.data)
     if serializer.is_valid():
-        return Response(serializer.validated_data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     

@@ -5,6 +5,7 @@ from .serializers import PostSerializer, CommentSerializer
 from .models import Post, Comment
 from django.db.models import Q
 from .pagination import CustomPostPagination, CustomCommentPagination
+from rest_framework.response import Response
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()

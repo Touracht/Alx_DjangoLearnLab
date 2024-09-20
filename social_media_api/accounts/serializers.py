@@ -44,15 +44,18 @@ class LoginSerializer(serializers.Serializer):
         data['user'] = user
         return data
     
-    def create(self, validated_data):
-        user = validated_data['user']
+    def to_representation(self, instance):
 
-        Token.objects.create(user=user)
+        user = instance['user']
+        token, _ = Token.objects.get_or_create(user=user)
 
-        token, created = Token.objects.get_or_create(user=user)
-        return {'token': token.key}
+        return {
+            'message': 'Login successful',
+            'token': token.key
+            }
+        
     
-class ProfileSerializer(serializers.Serializer):
+class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ['username', 'bio', 'profile_picture', 'followers']
