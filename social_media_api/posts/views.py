@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .serializers import PostSerializer
-from .models import Post
+from .serializers import PostSerializer, CommentSerializer
+from .models import Post, Comment
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -17,4 +17,9 @@ class PostViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAuthenticated]
 
         return [permission() for permission in permission_classes]
+    
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
         
