@@ -4,8 +4,7 @@ from rest_framework.response import Response
 from .serializers import CustomRegisterSerializer, LoginSerializer, ProfileSerializer, FollowingSerializer
 from rest_framework import status
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import views
+from rest_framework import permissions
 
 @api_view(['POST'])
 def register_user(request):
@@ -29,7 +28,7 @@ def login_user(request):
 class ProfileView(generics.RetrieveUpdateAPIView):
 
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         return self.request.user
@@ -37,8 +36,8 @@ class ProfileView(generics.RetrieveUpdateAPIView):
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-class FollowView(views.APIView):
-    permission_classes = [IsAuthenticated]
+class FollowView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, username):
         user_to_follow = get_object_or_404(User, username=username)
@@ -55,8 +54,8 @@ class FollowView(views.APIView):
         else:
             return Response({'detail': "You cannot follow yourself"}, status=status.HTTP_400_BAD_REQUEST)
         
-class UnfollowView(views.APIView):
-    permission_classes = [IsAuthenticated]
+class UnfollowView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, username):
         user_to_unfollow = get_object_or_404(User, username=username)
