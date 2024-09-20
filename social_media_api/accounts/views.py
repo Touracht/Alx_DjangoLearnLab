@@ -28,7 +28,7 @@ def login_user(request):
 class ProfileView(generics.RetrieveUpdateAPIView):
 
     serializer_class = ProfileSerializer
-    permission_class = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return self.request.user
