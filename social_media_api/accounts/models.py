@@ -23,6 +23,7 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=100, unique=True)
     bio = models.TextField(blank=True, null=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
-    followers = models.ManyToManyField('self', symmetrical=False, blank=True)
+    followers = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='follower_set')
+    following = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='following_set')
 
     objects = CustomUserManager()
