@@ -47,3 +47,6 @@ class FeedView(generics.GenericAPIView):
 
         followed_users = user.following.all()
         posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')
+
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
