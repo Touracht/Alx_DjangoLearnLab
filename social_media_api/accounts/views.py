@@ -33,8 +33,10 @@ class ProfileView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
     
+from .models import CustomUser
 from django.contrib.auth import get_user_model
 User = get_user_model()
+
 
 class FollowView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -53,6 +55,11 @@ class FollowView(generics.GenericAPIView):
         )
         else:
             return Response({'detail': "You cannot follow yourself"}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def get(self, request):
+        users = CustomUser.objects.all()
+        usernames = [user.username for user in users]
+        return Response(usernames)
         
 class UnfollowView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
