@@ -6,6 +6,7 @@ from .models import Post, Comment
 from django.db.models import Q
 from .pagination import CustomPostPagination, CustomCommentPagination
 from rest_framework.response import Response
+from rest_framework import generics
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -38,3 +39,11 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     pagination_class = [CustomCommentPagination]
         
+class FeedView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        followed_users = user.following.all()
+        posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')
