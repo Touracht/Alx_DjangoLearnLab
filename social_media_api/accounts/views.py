@@ -1,12 +1,15 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import CustomRegisterSerializer, LoginSerializer
+from .serializers import CustomRegisterSerializer, LoginSerializer, ProfileSerializer
 from rest_framework import status
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 @api_view(['POST'])
 def register_user(request):
-    serializer = CustomRegisterSerializer
+    serializer = CustomRegisterSerializer(data=request.data)
+
     if serializer.is_valid():
         user = serializer.save()
 
@@ -21,6 +24,16 @@ def login_user(request):
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class ProfileView(generics.RetrieveUpdateAPIView):
+
+    serializer_class = ProfileSerializer
+    permission_class = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+
 
 
 
