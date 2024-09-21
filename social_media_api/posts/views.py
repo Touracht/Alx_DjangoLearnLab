@@ -56,18 +56,16 @@ class LikeView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = LikeSerializer
 
-    def post(self, request, title):
-        post_to_like = get_object_or_404(Post, title=title)
-        user = request.user
-        data = {'post': post_to_like.id}
+    def post(self, request, pk):
+        post_to_like = generics.get_object_or_404(Post, pk=pk)
        
-        serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
+        like_instance, created = Like.objects.get_or_create(user = request.user, post = post_to_like)
 
-        serializer.save(user=user)
-
-        return Response({"detail": "Post liked successfully."}, status=status.HTTP_201_CREATED)
-    
+        if created:
+            return Response({'detail': 'You have successfully liked this post'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'detail': 'You have already liked this post'}, status=status.HTTP_400_BAD_REQUEST)
+        
 class UnlikeView(generics.GenericAPIView):
     pass
 
