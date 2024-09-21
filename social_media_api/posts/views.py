@@ -8,7 +8,9 @@ from .pagination import CustomPostPagination, CustomCommentPagination
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import status
-from notifications.models import create_like_notification
+from notifications.models import Notification 
+from django.contrib.contenttypes.models import ContentType
+
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -63,7 +65,15 @@ class LikeView(generics.GenericAPIView):
         like_instance, created = Like.objects.get_or_create(user = request.user, post = post_to_like)
 
         if created:
-            create_like_notification(post_to_like, request.user)
+            
+            content_type = ContentType.objects.get_for_model(post_to_like)
+            Notification.objects.create(
+                recipient=post_to_like.author, 
+                actor=request.user,          
+                verb='liked your post',
+                content_type=content_type,
+                object_id=post_to_like.id        
+            )
             return Response({'detail': 'You have successfully liked this post'}, status=status.HTTP_201_CREATED)
         else:
             return Response({'detail': 'You have already liked this post'}, status=status.HTTP_400_BAD_REQUEST)
