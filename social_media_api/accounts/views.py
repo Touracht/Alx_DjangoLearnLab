@@ -35,6 +35,7 @@ class ProfileView(generics.RetrieveUpdateAPIView):
     
 from .models import CustomUser
 from django.contrib.auth import get_user_model
+
 User = get_user_model()
 
 class FollowView(generics.GenericAPIView):
