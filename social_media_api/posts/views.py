@@ -72,11 +72,16 @@ class UnlikeView(generics.GenericAPIView):
     def post(self, request, pk):
         post = generics.get_object_or_404(Post, pk=pk)
     
-        try:
-            like_instance = Like.objects.get(user=request.user, post=post)
-        except Like.DoesNotExist:
+        like_instance, created = Like.objects.get_or_create(user=request.user, post=post)
+
+        if created:
             return Response({"detail": "You have not liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+
         else:
             like_instance.delete()
             return Response({"detail": "Post unliked successfully."}, status=status.HTTP_200_OK)
+
+
+
+
 
