@@ -15,4 +15,12 @@ class Notification(models.Model):
 
     timestamp = models.DateTimeField(default=timezone.now)
 
-
+def create_like_notification(post, user):
+    content_type = ContentType.objects.get_for_model(post)
+    Notification.objects.create(
+        recipient=post.author,
+        actor=user,
+        verb='liked your post',
+        content_type=content_type,
+        object_id=post.id
+    )

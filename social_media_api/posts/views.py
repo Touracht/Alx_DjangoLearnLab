@@ -8,6 +8,7 @@ from .pagination import CustomPostPagination, CustomCommentPagination
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import status
+from notifications.models import create_like_notification
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -62,6 +63,7 @@ class LikeView(generics.GenericAPIView):
         like_instance, created = Like.objects.get_or_create(user = request.user, post = post_to_like)
 
         if created:
+            create_like_notification(post_to_like, request.user)
             return Response({'detail': 'You have successfully liked this post'}, status=status.HTTP_201_CREATED)
         else:
             return Response({'detail': 'You have already liked this post'}, status=status.HTTP_400_BAD_REQUEST)
