@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-j18qg&7@4#p%lmgh15m4alwg2_25jh(#ouw$$3cb44$#(yko3t'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-j18qg&7@4#p%lmgh15m4alwg2_25jh(#ouw$$3cb44$#(yko3t')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -80,8 +82,12 @@ WSGI_APPLICATION = 'social_media_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'social_media_api_database',
+        'USER': 'root',
+        'PASSWORD': '2023202425',
+        'HOST': 'localhost',
+        'PORT': '3306'
     }
 }
 
@@ -121,14 +127,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') #Put it myself
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 AUTH_USER_MODEL = 'accounts.CustomUser' 
 
-import os
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -137,4 +144,31 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+#The following are security based: 
+
+
+
+# Enable the browser XSS filter
+SECURE_BROWSER_XSS_FILTER = True
+
+# Enable the X-Frame-Options header
+X_FRAME_OPTIONS = 'DENY'  # Prevents your site from being displayed in an iframe
+
+# Enable the Content-Type nosniff
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Redirect HTTP to HTTPS
+SECURE_SSL_REDIRECT = True  # Ensure you have SSL/TLS configured
+
+# Use a secure session cookie
+SESSION_COOKIE_SECURE = True
+
+# Set the X-Content-Type-Options header
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # One year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
