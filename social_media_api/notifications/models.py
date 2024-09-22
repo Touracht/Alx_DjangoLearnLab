@@ -12,15 +12,8 @@ class Notification(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     target = GenericForeignKey('content_type', 'object_id')
-
     timestamp = models.DateTimeField(default=timezone.now)
+    read = models.BooleanField(default=False)
 
-def create_like_notification(post, user):
-    content_type = ContentType.objects.get_for_model(post)
-    Notification.objects.create(
-        recipient=post.author,
-        actor=user,
-        verb='liked your post',
-        content_type=content_type,
-        object_id=post.id
-    )
+    def __str__(self):
+        return f"{self.actor} {self.verb}, {self.target}"
